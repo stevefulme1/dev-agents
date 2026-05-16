@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock, patch
 
+import httpx
+
 from dev_agents.tools.pypi_lookup import search_pypi
 
 
@@ -27,6 +29,6 @@ def test_search_pypi_success():
 
 
 def test_search_pypi_not_found():
-    with patch("dev_agents.tools.pypi_lookup.httpx.get", side_effect=Exception("404")):
+    with patch("dev_agents.tools.pypi_lookup.httpx.get", side_effect=httpx.HTTPError("404")):
         result = search_pypi("nonexistent-pkg-xyz")
         assert "error" in result

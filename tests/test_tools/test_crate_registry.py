@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock, patch
 
+import httpx
+
 from dev_agents.tools.crate_registry import get_crate_info, search_crates
 
 
@@ -28,6 +30,6 @@ def test_search_crates_success():
 
 
 def test_get_crate_info_not_found():
-    with patch("dev_agents.tools.crate_registry.httpx.get", side_effect=Exception("404")):
+    with patch("dev_agents.tools.crate_registry.httpx.get", side_effect=httpx.HTTPError("404")):
         result = get_crate_info("nonexistent-crate")
         assert "error" in result
